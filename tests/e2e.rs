@@ -18,7 +18,7 @@ lazy_static! {
 
 // Run a closure and collect the output emitted by the tracing instrumentation using an in-memory buffer.
 fn run_and_get_raw_output<F: Fn()>(action: F) -> String {
-    let formatting_layer = BunyanFormattingLayer::new("test".into(), || MockWriter::new(&BUFFER));
+    let formatting_layer = BunyanFormattingLayer::new(|| MockWriter::new(&BUFFER));
     let subscriber = Registry::default()
         .with(JsonStorageLayer)
         .with(formatting_layer);
