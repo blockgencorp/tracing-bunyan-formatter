@@ -126,10 +126,14 @@ where
                 &message,
                 event.metadata().level(),
             )?;
+
+            if let Some(span) = &current_span {
+                map_serializer.serialize_entry("event", span.metadata().name())?;
+            }
+
             // Additional metadata useful for debugging
             // They should be nested under `src` (see https://github.com/trentm/node-bunyan#src )
             // but `tracing` does not support nested values yet
-            map_serializer.serialize_entry("event", event.metadata().name())?;
             map_serializer.serialize_entry("target", event.metadata().target())?;
             map_serializer.serialize_entry("line", &event.metadata().line())?;
             map_serializer.serialize_entry("file", &event.metadata().file())?;
